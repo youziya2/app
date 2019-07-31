@@ -1,14 +1,11 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">主页</router-link> |
-      <router-link to="/login">登录页面</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
 
 <style lang="less">
+	body,p{margin: 0px;padding: 0px;}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
