@@ -5,13 +5,17 @@
 </template>
 
 <style lang="less">
+	body,html{height: 100%}
 	body,p{margin: 0px;padding: 0px;}
+	.el-form-item__content{margin-left: 0px !important;}
+	.el-form-item__label{width: 60px !important;}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+	height: 100%
 }
 #nav {
   padding: 30px;

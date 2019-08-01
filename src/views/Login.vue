@@ -80,7 +80,7 @@
 // 					}
 					// var vm = this;
 				if(this.checked){		
-				if(!cookie.getCookie("name")==""&&!cookie.getCookie("pas")==""){
+				if(!cookie.getCookie("name")==""&&!cookie.getCookie("pas")==""){		//判断cookie内是否有值
 					this.ruleForm.user=base64.decode(cookie.getCookie("name"))
 					this.ruleForm.pass=base64.decode(cookie.getCookie("pas"))
 				}
@@ -95,17 +95,32 @@
 				},
 	  // 重置方法
       resetForm(formName) {
-        this.$refs[formName].resetFields();
+		 //清空用户名和密码
+		  this.ruleForm.user=""	
+		  this.ruleForm.pass=""
+        // this.$refs[formName].resetFields();
       }
     }
   }
 </script>
 <style scoped="scoped">
 	.el-form{width:400px;margin:0px auto;background-color:#fff;border-radius: 4px;height: 280px;}
-	#login{background-color:#3BAFDA;height: 650px ;display: flex;align-items: center; }
+	#login{background-color:#3BAFDA;height: 100%;display: flex;align-items: center; }
 	body,p{margin: 0px;padding: 0px;}
 	.el-input{width: 80%;}
 #first{margin-top: 60px;}
-.el-form-item{margin-right: 40px;}
-#last{width: 300px;}
+.el-form-item{margin-right: 20px;}
+#last{width: 300px;margin-left: 50px;}
+@media only screen and (max-width: 768px) {
+  .el-form {
+    width: 280px;
+    margin: 50px auto;
+  }
+.el-input{width: 150px;}
+#last{margin-left: 0px;}
+/* #login{height: 100%;} */
+  }
+  
+
+
 </style>
