@@ -3,10 +3,10 @@
 		<!-- 导航栏 -->
 		<div class="title">
 			<!-- 折叠栏 -->
-			<div class="title-left">		
-				 <div class="menu-item-wrapper">
-				<i @click="unfold" class="el-icon-s-unfold" id="pic1"></i>
-				<i @click="unfold" class="el-icon-s-fold" id="pic2" style="display: none;"></i>
+			<div class="title-left">
+				<div class="menu-item-wrapper">
+					<i @click="unfold" class="el-icon-s-unfold" id="pic1"></i>
+					<i @click="unfold" class="el-icon-s-fold" id="pic2" style="display: none;"></i>
 				</div>
 			</div>
 			<!-- 头部导航栏 -->
@@ -20,7 +20,9 @@
 		</div>
 		<!-- 左边侧边栏 -->
 		<div class="lfte">
-			<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+			<el-row class="tac">
+				<el-col :span="12">
+			<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :default-openeds="openeds">
 				<!-- <p>智学无忧教育管理系统</p> -->
 				<!-- 双重for循环 -->
 				<!-- 此方法中index如果不加''+符号会报got number的错误 -->
@@ -29,11 +31,14 @@
 						<i class="el-icon-location"></i>
 						<span slot="title">{{itme.name}}</span>
 					</template>
-					<el-menu-item index="1-1" v-for="(itmeson,index) in itme.basics" :key="index"   @click="clickMenu(itmeson.manage)">
-							<span>{{itmeson.manage}}</span>
+					<el-menu-item v-for="(itmeson,index) in itme.basics" :key="index" @click="clickMenu(itmeson)" :index="itmeson.routers"	:id="itmeson.routers">
+						{{itmeson.manage}}
 					</el-menu-item>
 				</el-submenu>
 			</el-menu>
+			  </el-col>
+</el-row>
+
 		</div>
 		<div class="content">
 			<router-view />
@@ -47,52 +52,60 @@
 		name: 'home',
 		data() {
 			return {
-				isCollapse: false,
+				openeds: ['0','1'],		//默认展开侧边栏
+				isCollapse: false,		//默认侧边栏展开状态
 				editableTabsValue: '/',
 				editableTabs: [{
 					title: '首页',
 					name: '/',
-					content: '111'
+					content: ''
 				}],
 				tabIndex: 1,
-				openedTab: ["首页","学生管理","教师管理","班级管理","修改密码","布置试卷","安排考试","批阅试卷","查看成绩","维护试卷"],
-				routers:["/","student","teacher","grade","amend","paper","exam","read","examine","maintain"],
 				// 双重v-for循环格式
 				content: [{
 						name: '基础信息',
-						basics: [
-							{
-								manage: '首页'
-								},{
-								manage: '学生管理'
+						basics: [{
+								manage: '首页',
+								routers: "/"
+							}, {
+								manage: '学生管理',
+								routers: "student"
 							},
 							{
-								manage: '教师管理'
+								manage: '教师管理',
+								routers: "teacher"
 							},
 							{
-								manage: '班级管理'
+								manage: '班级管理',
+								routers: "grade"
 							},
 							{
-								manage: '修改密码'
+								manage: '修改密码',
+								routers: "amend"
 							}
 						],
 					},
 					{
 						name: '考试系统',
 						basics: [{
-								manage: '布置试卷'
+								manage: '布置试卷',
+								routers: "paper"
 							},
 							{
-								manage: '安排考试'
+								manage: '安排考试',
+								routers: "exam"
 							},
 							{
-								manage: '批阅试卷'
+								manage: '批阅试卷',
+								routers: "read"
 							},
 							{
-								manage: '查看成绩'
+								manage: '查看成绩',
+								routers: "examine"
 							},
 							{
-								manage: '维护试卷'
+								manage: '维护试卷',
+								routers: "maintain"
 							}
 						],
 					}
@@ -100,94 +113,123 @@
 			}
 		},
 		methods: {
-			unfold(){
+			unfold() {
 				let pic1 = document.getElementById("pic1")
 				let pic2 = document.getElementById("pic2")
-				this.isCollapse=!this.isCollapse
-				if(this.isCollapse){
-					pic1.style.display="none"
-					pic2.style.display="block"
-				}else{
-					pic1.style.display="block"
-					pic2.style.display="none"
+				this.isCollapse = !this.isCollapse
+				if (this.isCollapse) {
+					pic1.style.display = "none"
+					pic2.style.display = "block"
+				} else {
+					pic1.style.display = "block"
+					pic2.style.display = "none"
 				}
-			}
-			,
+			},
 			handleOpen(key, keyPath) {
 				console.log(key, keyPath);
 			},
 			handleClose(key, keyPath) {
 				console.log(key, keyPath);
 			},
-			 clickMenu (componentName) {
-				 var that = this
-				 console.log(componentName)		//点击当前名称
-				let indexa=that.openedTab.indexOf(componentName) 
-				//点击当前下标
-				console.log(indexa)				
-				that.$router.push(that.routers[indexa])		//跳路由
-				that.editableTabsValue=that.routers[indexa]	
-						//点击左边栏同步导航栏
-					console.log(that.routers[indexa])		
-					console.log(that.editableTabs)
-					//如果没有导航信息则向editableTabs中加入	
-				// if(indexa==-1){
-					
-					for (var i = 0; i < that.editableTabs.length; i++) {
-						console.log(that.editableTabs[i].title)
+				//点击导航栏跳路由
+			handleClickTab(name) {
+				// console.log(name)
+			      for (var m = 0; m < this.content.length; m++) {
+			        for (var n = 0; n < this.content[m].basics.length; n++) {
+			          var ser = this.content[m].basics;
+					  // console.log(ser[n].manage)
+			          if (ser[n].manage == name.label) {
+						  // console.log(ser[n])
+			            this.clickMenu(ser[n]);			//调用菜单点击方法达到颜色变化监听效果
+						this.$router.push(ser[n].routers)
+			          }
+			        }
+			      }
+			    },
+			 // 菜单打开页面
+			clickMenu(menu) {	
+				// console.log(menu)
+			// document.getElementById(menu.routers).style.color="rgb(255, 208, 75)"
+			      for (var m = 0; m < this.content.length; m++) {
+			        for (var n = 0; n < this.content[m].basics.length; n++) {
+			          var ser = this.content[m].basics;
+					  // console.log(ser[n].routers)
+					  document.getElementById(ser[n].routers).style.color="#fff"		//所有样式全部变成白色
+			        }
+			      }
+				  document.getElementById(menu.routers).style.color="rgb(255, 208, 75)"		//当前样式重新覆盖
+				console.log(menu)
+				var exist = false;
+			//判断名字是否相同	
+				for (var i = 0; i < this.editableTabs.length; i++) {
+					if (menu.manage == this.editableTabs[i].title) {
+						exist = true;
+						break;
 					}
-					
-					that.editableTabs.push(
-					{title:componentName,
-					name:that.routers[indexa],
-					content:''},
-					)
-					// }
-			 },
-			handleClickTab(targetName) {
-				console.log(targetName.label)		//查看页面名称
-				var that=this
-				let indexa=that.openedTab.indexOf(targetName.label)  //查看页面下标
-				console.log(indexa)	
-				 this.$router.push(that.routers[indexa])		//跳路由
-				 
+				}
+			//如果名字相同就跳路由回去
+				if (exist == true) {
+					this.editableTabsValue = menu.routers;
+					this.$router.push(menu.routers)	
+					return;
+				}
+				this.editableTabs.push({		//把新窗口的信息push进editableTabs数组
+					title: menu.manage,
+					name: menu.routers
+				});
+				this.editableTabsValue = menu.routers;
+				this.$router.push(menu.routers)		//跳路由
 			},
+			//点击导航栏跳路由
+// 			handleClickTab(targetName) {
+// 								var that=this
+// 								//查看页面信息
+// 								// console.log(targetName)	
+// 								//查看页面名字
+// 								// console.log(targetName.label)	
+// 								let names = targetName.label
+// 								let router = targetName.name							
+// 								// console.log(router)	
+// 								 that.$router.push(router)		//跳路由
+// 			},
 			removeTab(targetName) {
+				// console.log(targetName)
+					if (targetName == '/') {
+						return;
+					}
 				let tabs = this.editableTabs
 				let activeName = this.editableTabsValue
-				let activetitle = ""
 				if (activeName === targetName) {
 					tabs.forEach((tab, index) => {
 						if (tab.name === targetName) {
 							let nextTab = tabs[index + 1] || tabs[index - 1]
-							console.log(nextTab)		//查看页面名称
+							console.log(nextTab) //查看页面名称
 							if (nextTab) {
 								activeName = nextTab.name
-								activetitle = nextTab.title
 							}
 						}
 					})
 				}
-				let deductIndex = this.openedTab.indexOf(activetitle)
-				// this.openedTab.splice(deductIndex, 1)
 				this.$router.push(activeName)
 				this.editableTabsValue = activeName
 				this.editableTabs = tabs.filter(tab => tab.name !== targetName)
-				if (this.openedTab.length === 0) {
-					this.$router.push('/')
-				}
 			}
 		}
 	}
 </script>
 <style scoped="scoped">
 	.el-icon-s-unfold,
-	.el-icon-s-fold{width:50px;height:50px;font-size:50px}
-	
-		.title-left{
+	.el-icon-s-fold {
+		width: 50px;
+		height: 50px;
+		font-size: 50px
+	}
+
+	.title-left {
 		width: 5%;
 		float: left;
 	}
+
 	.title-rigth {
 		width: 95%;
 		float: right;
@@ -239,5 +281,9 @@
   } */
 	/deep/.el-radio-group {
 		text-align: left;
+	}
+		.el-menu-item:hover {
+		background: #fff !important;
+		color: #000000 !important;
 	}
 </style>
