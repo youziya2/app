@@ -68,6 +68,8 @@
 						let uid = data.data.profile.userUid
 						sessionStorage.setItem('token',token);
 						sessionStorage.setItem('uid',uid);
+						sessionStorage.removeItem("TabName");
+						sessionStorage.removeItem("editableTabs");
 						that.shai()
 					}
 				}).catch((err) => {

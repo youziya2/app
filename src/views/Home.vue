@@ -5,13 +5,17 @@
 			<!-- 折叠栏 -->
 			<div class="title-left">
 				<div class="menu-item-wrapper">
+					<el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
 					<i @click="unfold" class="el-icon-s-unfold" id="pic1"></i>
 					<i @click="unfold" class="el-icon-s-fold" id="pic2" style="display: none;"></i>
+					<!-- <el-radio-button :label="false">展开</el-radio-button>
+					<el-radio-button :label="true">收起</el-radio-button> -->
+					</el-radio-group>
 				</div>
 			</div>
 			<!-- 头部导航栏 -->
 			<div class="title-rigth">
-				<el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" @tab-click="handleClickTab">
+				<el-tabs v-model="editableTabsValue" type="card" :closable="true" @tab-remove="removeTab" @tab-click="handleClickTab">
 					<el-tab-pane :key="item.name" v-for="item in editableTabs" :label="item.title" :name="item.name">
 						{{item.content}}
 					</el-tab-pane>
@@ -20,8 +24,8 @@
 		</div>
 		<!-- 左边侧边栏 -->
 		<div class="lfte">
-			<el-row class="tac">
-				<el-col :span="12">
+<!-- 			<el-row class="tac">
+				<el-col :span="12"> -->
 			<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :default-openeds="openeds">
 				<!-- <p>智学无忧教育管理系统</p> -->
 				<!-- 双重for循环 -->
@@ -36,9 +40,9 @@
 					</el-menu-item>
 				</el-submenu>
 			</el-menu>
-			  </el-col>
+<!-- 			  </el-col>
 </el-row>
-
+ -->
 		</div>
 		<div class="content">
 			<router-view />
@@ -202,6 +206,11 @@
 				if (exist == true) {
 					this.editableTabsValue = menu.routers;
 					this.$router.push(menu.routers)	
+						sessionStorage.setItem(
+					    "editableTabs",
+					    JSON.stringify(this.editableTabs)
+					  ); //添加存储用户操作的tab内容
+					  sessionStorage.setItem("TabName", menu.routers); //存储menu.routers,这里需要的是editableTabs数组中name
 					return;
 				}
 				this.editableTabs.push({		//把新窗口的信息push进editableTabs数组
@@ -210,11 +219,11 @@
 				});
 				this.editableTabsValue = menu.routers;
 				this.$router.push(menu.routers)		//跳路由
-				 sessionStorage.setItem(
-        "editableTabs",
-        JSON.stringify(this.editableTabs)
-      ); //添加存储用户操作的tab内容
-      sessionStorage.setItem("TabName", menu.routers); //存储menu.routers,这里需要的是editableTabs数组中name
+					sessionStorage.setItem(
+				    "editableTabs",
+				    JSON.stringify(this.editableTabs)
+				  ); //添加存储用户操作的tab内容
+				  sessionStorage.setItem("TabName", menu.routers); //存储menu.routers,这里需要的是editableTabs数组中name
 			},
 			//点击导航栏跳路由
 // 			handleClickTab(targetName) {
@@ -267,6 +276,10 @@
 	}
 </script>
 <style scoped="scoped">
+	  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
 	.el-icon-s-unfold,
 	.el-icon-s-fold {
 		width: 50px;

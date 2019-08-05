@@ -2,7 +2,7 @@
 <div>
 		<el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 			<el-form-item label="旧密码" prop="age">
-				<el-input v-model.number="ruleForm.age" type="text"></el-input>
+				<el-input v-model="ruleForm.age" type="text" autocomplete="off"></el-input>
 			</el-form-item>
 			<el-form-item label="密码" prop="pass">
 				<el-input type="text" v-model="ruleForm.pass" autocomplete="off"></el-input>
@@ -71,7 +71,25 @@
 			},
 			methods: {
 				submitForm(formName) {
-					console.log(formName)
+					let that = this
+					console.log(that.ruleForm.age)
+					console.log(that.ruleForm.checkPass)
+					console.log(sessionStorage.getItem('uid'))	
+					that.axios.get('/api/User/ModifyPassword', {
+						params: {
+							uid: sessionStorage.getItem('uid'),
+							oldPassword: that.ruleForm.age,
+							newPassword: that.ruleForm.checkPass
+						}
+					}).then(function(res) {
+						console.log(res)
+					that.$message.success('修改成功');
+					}).catch((err) => {
+						console.log(err)
+						that.$message.error('修改失败');
+					})
+					
+					
 				},
 				//重置方法
 				resetForm(formName) {
