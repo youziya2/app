@@ -65,7 +65,9 @@
 						that.$router.push("/")
 						that.$message.success('登录成功');
 						let token = data.data.token_type +''+ data.data.access_token
+						let uid = data.data.profile.userUid
 						sessionStorage.setItem('token',token);
+						sessionStorage.setItem('uid',uid);
 						that.shai()
 					}
 				}).catch((err) => {
