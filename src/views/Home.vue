@@ -54,7 +54,7 @@
 			return {
 				openeds: ['0','1'],		//默认展开侧边栏
 				isCollapse: false,		//默认侧边栏展开状态
-				asideTionList: [],
+				Srray: [],		//空数组接收
 				editableTabsValue: '/',
 				editableTabs: [{
 					title: '首页',
@@ -113,64 +113,37 @@
 				],
 			}
 		},
-// 		 created() {
-//     let that = this;
-//     // forEach循环遍历数组
-//     that.content.forEach(item => {
-//       item.basics.forEach(item => {
-//         that.asideTionList.push(item);
-//       });
-//     });
-//     var getTabList = JSON.parse(sessionStorage.getItem("editableTabs")); 			//用变量接收得到存储的tab内容
-//     var getTabName = sessionStorage.getItem("TabName"); 		//得用变量接收得到存储的tab的name
-// 	// console.log(getTabName)
-// 	//如果存在sessionStorage数据,改变其结果
-//     if (getTabList && getTabName) {
-//      that.editableTabs = getTabList;
-//      that.editableTabsValue = getTabName;
-// 			      for (var m = 0; m < this.content.length; m++) {
-// 			        for (var n = 0; n < this.content[m].basics.length; n++) {
-// 			          var ser = this.content[m].basics;
-// 					  console.log(ser[n].routers)
-// 					  // document.getElementById(ser[n].routers).style.color="#fff"		//所有样式全部变成白色
-// 					  var a = document.getElementById(ser[n].routers)
-// 					  console.log(a)
-// 			        }
-// 			      }
-// 				  // document.getElementById(getTabName).style.color="rgb(255, 208, 75)"		//当前样式重新覆盖
-//     }
-//   },
+//此处用created（创建后） dom并没有加载
    mounted() {
         setTimeout(_ => {
         let that = this;
        // forEach循环遍历数组
        that.content.forEach(item => {
          item.basics.forEach(item => {
-           that.asideTionList.push(item);
+           that.Srray.push(item);
          });
        });
-       var getTabList = JSON.parse(sessionStorage.getItem("editableTabs")); 			//用变量接收得到存储的tab内容
-       var getTabName = sessionStorage.getItem("TabName"); 		//得用变量接收得到存储的tab的name
-       // console.log(getTabName)
+       let EditableTabs = JSON.parse(sessionStorage.getItem("editableTabs")); 			//用变量接收得到存储的tab内容
+       let TabName = sessionStorage.getItem("TabName"); 		//得用变量接收得到存储的tab的name
+       // console.log(TabName)
        //如果存在sessionStorage数据,改变其结果
-       if (getTabList && getTabName) {
-        that.editableTabs = getTabList;
-        that.editableTabsValue = getTabName;
-       		      for (var m = 0; m < this.content.length; m++) {
-       		        for (var n = 0; n < this.content[m].basics.length; n++) {
-       		          var ser = this.content[m].basics;
-       				  console.log(ser[n].routers)
+       if (EditableTabs && TabName) {
+        that.editableTabs = EditableTabs;
+        that.editableTabsValue = TabName;
+       		      for (var m = 0; m < that.content.length; m++) {
+       		        for (var n = 0; n < that.content[m].basics.length; n++) {
+       		          var ser = that.content[m].basics;
+       				  // console.log(ser[n].routers)
        				  document.getElementById(ser[n].routers).style.color="#fff"		//所有样式全部变成白色
        				  // var a = document.getElementById(ser[n].routers)
        				  // console.log(a)
        		        }
        		      }
-       			  document.getElementById(getTabName).style.color="rgb(255, 208, 75)"		//当前样式重新覆盖
+       			  document.getElementById(TabName).style.color="rgb(255, 208, 75)"		//当前样式重新覆盖
        }
         
-        }, 1000);
+        }, );
     },
-
 		methods: {
 			unfold() {
 				let pic1 = document.getElementById("pic1")
@@ -300,57 +273,46 @@
 		height: 50px;
 		font-size: 50px
 	}
-
 	.title-left {
 		width: 5%;
 		float: left;
 	}
-
 	.title-rigth {
 		width: 95%;
 		float: right;
 	}
-
 	.title {
 		width: 80%;
 		float: right;
 	}
-
 	/* .el-tabs{float: right;} */
 	.el-col-12 {
 		width: 100%;
 	}
-
 	.basics,
 	.test {
 		cursor: pointer;
 	}
-
 	ul,
 	li {
 		padding: 0px;
 		margin: 0px;
 	}
-
 	ul li {
 		list-style: none;
 	}
-
 	.lfte {
 		width: 20%;
 		float: left;
 		overflow: hidden;
 	}
-
 	.content {
 		width: 80%;
 		float: right;
 	}
-
 	h5 {
 		text-align: center;
 	}
-
 	/* 	  .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
@@ -363,3 +325,4 @@
 		color: #000000 !important;
 	}
 </style>
+
