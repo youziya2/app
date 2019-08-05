@@ -54,6 +54,7 @@
 			return {
 				openeds: ['0','1'],		//默认展开侧边栏
 				isCollapse: false,		//默认侧边栏展开状态
+				Srray: [],		//空数组接收
 				editableTabsValue: '/',
 				editableTabs: [{
 					title: '首页',
@@ -112,6 +113,37 @@
 				],
 			}
 		},
+//此处用created（创建后） dom并没有加载
+   mounted() {
+        setTimeout(_ => {
+        let that = this;
+       // forEach循环遍历数组
+       that.content.forEach(item => {
+         item.basics.forEach(item => {
+           that.Srray.push(item);
+         });
+       });
+       let EditableTabs = JSON.parse(sessionStorage.getItem("editableTabs")); 			//用变量接收得到存储的tab内容
+       let TabName = sessionStorage.getItem("TabName"); 		//得用变量接收得到存储的tab的name
+       // console.log(TabName)
+       //如果存在sessionStorage数据,改变其结果
+       if (EditableTabs && TabName) {
+        that.editableTabs = EditableTabs;
+        that.editableTabsValue = TabName;
+       		      for (var m = 0; m < that.content.length; m++) {
+       		        for (var n = 0; n < that.content[m].basics.length; n++) {
+       		          var ser = that.content[m].basics;
+       				  // console.log(ser[n].routers)
+       				  document.getElementById(ser[n].routers).style.color="#fff"		//所有样式全部变成白色
+       				  // var a = document.getElementById(ser[n].routers)
+       				  // console.log(a)
+       		        }
+       		      }
+       			  document.getElementById(TabName).style.color="rgb(255, 208, 75)"		//当前样式重新覆盖
+       }
+        
+        }, );
+    },
 		methods: {
 			unfold() {
 				let pic1 = document.getElementById("pic1")
@@ -139,8 +171,9 @@
 			          var ser = this.content[m].basics;
 					  // console.log(ser[n].manage)
 			          if (ser[n].manage == name.label) {
-						  // console.log(ser[n])
+						  console.log(ser[n])
 			            this.clickMenu(ser[n]);			//调用菜单点击方法达到颜色变化监听效果
+						sessionStorage.setItem("TabName",ser[n].routers);
 						this.$router.push(ser[n].routers)
 			          }
 			        }
@@ -148,8 +181,6 @@
 			    },
 			 // 菜单打开页面
 			clickMenu(menu) {	
-				// console.log(menu)
-			// document.getElementById(menu.routers).style.color="rgb(255, 208, 75)"
 			      for (var m = 0; m < this.content.length; m++) {
 			        for (var n = 0; n < this.content[m].basics.length; n++) {
 			          var ser = this.content[m].basics;
@@ -179,6 +210,11 @@
 				});
 				this.editableTabsValue = menu.routers;
 				this.$router.push(menu.routers)		//跳路由
+				 sessionStorage.setItem(
+        "editableTabs",
+        JSON.stringify(this.editableTabs)
+      ); //添加存储用户操作的tab内容
+      sessionStorage.setItem("TabName", menu.routers); //存储menu.routers,这里需要的是editableTabs数组中name
 			},
 			//点击导航栏跳路由
 // 			handleClickTab(targetName) {
@@ -193,7 +229,7 @@
 // 								 that.$router.push(router)		//跳路由
 // 			},
 			removeTab(targetName) {
-				// console.log(targetName)
+				console.log(targetName)
 					if (targetName == '/') {
 						return;
 					}
@@ -203,6 +239,14 @@
 					tabs.forEach((tab, index) => {
 						if (tab.name === targetName) {
 							let nextTab = tabs[index + 1] || tabs[index - 1]
+										      for (var m = 0; m < this.content.length; m++) {
+							  for (var n = 0; n < this.content[m].basics.length; n++) {
+							    var ser = this.content[m].basics;
+												  // console.log(ser[n].routers)
+												  document.getElementById(ser[n].routers).style.color="#fff"		//所有样式全部变成白色
+							  }
+							}
+							document.getElementById(nextTab.name).style.color="rgb(255, 208, 75)"		//当前样式重新覆盖
 							console.log(nextTab) //查看页面名称
 							if (nextTab) {
 								activeName = nextTab.name
@@ -213,6 +257,11 @@
 				this.$router.push(activeName)
 				this.editableTabsValue = activeName
 				this.editableTabs = tabs.filter(tab => tab.name !== targetName)
+				sessionStorage.setItem("editableTabs", JSON.stringify(this.editableTabs)); 
+				sessionStorage.setItem("TabName", activeName); 
+			},
+			col(){
+				
 			}
 		}
 	}
@@ -224,57 +273,46 @@
 		height: 50px;
 		font-size: 50px
 	}
-
 	.title-left {
 		width: 5%;
 		float: left;
 	}
-
 	.title-rigth {
 		width: 95%;
 		float: right;
 	}
-
 	.title {
 		width: 80%;
 		float: right;
 	}
-
 	/* .el-tabs{float: right;} */
 	.el-col-12 {
 		width: 100%;
 	}
-
 	.basics,
 	.test {
 		cursor: pointer;
 	}
-
 	ul,
 	li {
 		padding: 0px;
 		margin: 0px;
 	}
-
 	ul li {
 		list-style: none;
 	}
-
 	.lfte {
 		width: 20%;
 		float: left;
 		overflow: hidden;
 	}
-
 	.content {
 		width: 80%;
 		float: right;
 	}
-
 	h5 {
 		text-align: center;
 	}
-
 	/* 	  .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
@@ -287,3 +325,4 @@
 		color: #000000 !important;
 	}
 </style>
+
