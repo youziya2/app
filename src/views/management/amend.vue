@@ -71,28 +71,9 @@
 			},
 			methods: {
 				submitForm(formName) {
-					// console.log(formName)
-					var that = this
-					let token = JSON.parse(sessionStorage.getItem("token")).access_token
-					token = "Bearer" + " " + token
-					this.axios.defaults.headers.common['Authorization'] = token;
-					let uid=JSON.parse(sessionStorage.getItem("token")).profile.userUid
-	// 				console.log(uid)
-	// 				console.log(that.ruleForm.age)
-	// 				console.log(that.ruleForm.pass)
-					this.axios.get('http://192.168.1.188:12/api/User/ModifyPassword?uid='+uid+'&oldPassword='+that.ruleForm.age+'&newPassword='+that.ruleForm.pass+'')
-						.then(function(res) {
-							sessionStorage.clear();
-							that.$router.push({name:"login"})
-							that.$message({
-								message: '恭喜你，修改成功',
-								type: 'success'
-							});
-						})
-						.catch(function(error) {
-							console.log(error);
-						});
+
 				},
+				//重置方法
 				resetForm(formName) {
 					this.$refs[formName].resetFields();
 				}
