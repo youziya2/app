@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="amend">
 		<el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 			<el-form-item label="旧密码" prop="age">
 				<el-input v-model="ruleForm.age" type="text" autocomplete="off"></el-input>
@@ -74,7 +74,6 @@
 					let that = this
 					console.log(that.ruleForm.age)
 					console.log(that.ruleForm.checkPass)
-					console.log(sessionStorage.getItem('uid'))	
 					that.axios.get('/api/User/ModifyPassword', {
 						params: {
 							uid: sessionStorage.getItem('uid'),
@@ -83,7 +82,21 @@
 						}
 					}).then(function(res) {
 						console.log(res)
+						if(res.data.code==-3){
+							that.$message.error('旧密码错误');
+						}
+						if(res.data.code==-1){
+							that.$message.error('系统异常');
+						}
+							if(res.data.code==-2){
+							that.$message.error('参数错误');
+						}
+						if(res.data.code==1){
 					that.$message.success('修改成功');
+					sessionStorage.removeItem("token");
+					sessionStorage.removeItem("uid");
+					that.$router.push("login")
+					}
 					}).catch((err) => {
 						console.log(err)
 						that.$message.error('修改失败');
@@ -99,5 +112,11 @@
 		}
 </script>
 
-<style>
+<style scoped="scoped">
+	.amend{
+		margin: 0px auto;
+	}
+	/deep/.el-form-item{
+		text-align: center;
+	}
 </style>

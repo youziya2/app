@@ -14,26 +14,31 @@ export default
 	  { 
 	path: '/exam',
       name: 'exam',
-      component: exam
+      component: exam,
+			meta:{requireAuth:true}
 	  },
 	  { 
 	  path: '/examine',
 	    name: 'examine',
-	   component: examine
+	   component: examine,
+		 meta:{requireAuth:true}
 	    },
 		{ 
 		path: '/maintain',
 		  name: 'maintain',
-		component: maintain
+		component: maintain,
+		meta:{requireAuth:true}
 		  },
 		{ 
 		  path: '/paper',
 		    name: 'paper',
-		component: paper
+		component: paper,
+		meta:{requireAuth:true}
 		    },
 			{ 
 			  path: '/read',
 			    name: 'read',
-			component: read
+			component: read,
+			meta:{requireAuth:true}
 			    }			
   ]
