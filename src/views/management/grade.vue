@@ -67,7 +67,7 @@
 					resource: '',
 					desc: ''
 				},
-				tableData: [{
+				tableData: [{		//接收信息
 					"classId": '', //班级主键编号
 					"className": "", //班级名称
 					"classTeacherId": '', //老师编号
@@ -77,11 +77,18 @@
 					"classStudents": '', //班级人数
 					"classCreateTime": '' //班级创建日期
 				}],
+				couRses:[ 
+					{
+					courseId:'',
+					courseName:''
+				}
+				],
 				formLabelWidth: '120px'
 			};
 		},
 		created() {
 			this.loaDing();
+			this.couRse();
 		},
 		methods: {
 			loaDing() {
@@ -90,6 +97,17 @@
 					// console.log(res)
 					that.tableData=res.data
 					console.log(that.tableData)
+				}).catch((err) => {
+					console.log(err)
+					that.$message.error('失败');
+				})
+			},
+			couRse(){
+				let that = this
+				that.axios.get('/api/Class/GetAllCourse').then(function(res) {
+					// console.log(res)
+					that.couRses=res.data
+					console.log(that.couRses)
 				}).catch((err) => {
 					console.log(err)
 					that.$message.error('失败');
@@ -109,9 +127,6 @@
 </script>
 
 <style scoped="scoped">
-	/* 	/deep/.box-card {
-		width:620px !important;
-		} */
 	.el-card {
 		width: 95% !important;
 	}

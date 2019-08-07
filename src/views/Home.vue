@@ -49,16 +49,16 @@
 					</el-tabs>
 				</div>
 				<div class="last">
-					<!-- <el-col :span="4" class="userinfo"> -->
-					<el-dropdown trigger="hover">
-						<span class="el-dropdown-link userinfo-inner">王小虎</span>
+					<el-col :span="12">
+					<el-dropdown trigger="click">
+						<span class="el-dropdown-link">王小虎</span>
 						<el-dropdown-menu slot="dropdown">
 							<el-dropdown-item>我的消息</el-dropdown-item>
 							<el-dropdown-item>设置</el-dropdown-item>
-							<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+							<el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
 						</el-dropdown-menu>
 					</el-dropdown>
-					<!-- </el-col> -->
+					</el-col>
 				</div>
 				<div class="bod">
 					<router-view />
@@ -283,6 +283,9 @@
 	}
 </script>
 <style scoped="scoped">
+	.el-dropdown-menu__item{
+		width: 80px !important;
+	}
 	.pic {
 		position: relative;
 		height: 60px;
@@ -290,110 +293,86 @@
 			width: 60px;
 			display: inline-block;
 		}
-
 	}
 		img {
 		width: 50px !important;
 		max-width: 50px !important;
 	}
-
 	.el-col-4 {
 		width: 100%;
 	}
-
 	.el-menu-vertical-demo:not(.el-menu--collapse) {
 		width: 200px;
 		min-height: 400px;
 	}
-
 	/deep/.el-tabs__item {
 		height: 44px !important;
 	}
-
 	.el-icon-s-unfold,
 	.el-icon-s-fold {
 		width: 50px;
 		height: 50px;
 		font-size: 50px
 	}
-
 	.last {
 		float: right;
 		width: 9%;
 		height: 56px;
 		line-height: 56px;
 	}
-
 	@media only screen and (max-width: 1200px) {
 		.last {
 			display: none
 		}
 	}
-
 	.title-left {
 		height: 56px;
 		width: 4%;
 		float: left;
 	}
-
 	.title-rigth {
 		width: 85%;
 		float: left;
 	}
-
 	.title {
 		width: 100%;
 		float: right;
 	}
-
 	/* .el-tabs{float: right;} */
 	.el-col-12 {
 		width: 100%;
 	}
-
-	.basics,
-	.test {
+	.basics,.test {
 		cursor: pointer;
 	}
-
-	ul,
-	li {
+	ul,li {
 		padding: 0px;
 		margin: 0px;
 	}
-
 	ul li {
 		list-style: none;
 	}
-
 	.lfte {
 		float: left;
 		height: 98vh;
-
 	}
-
 	.el-menu-vertical-demo {
 		height: 100%;
 		overflow-x: hidden;
 	}
-
 	.content {
 		display: flex;
 	}
-
 	.bod {
 		width: 100%;
 		float: left;
 	}
-
 	h5 {
 		text-align: center;
 	}
-
 	/deep/.el-radio-group {
 		text-align: left;
 	}
-
 	.el-menu-item:hover {
 		background: #fff !important;
 		color: #000000 !important;
