@@ -11,7 +11,7 @@
 				<el-checkbox v-model="checked">记住密码</el-checkbox>
 			</div>
 			<el-form-item id="last">
-				<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+				<el-button type="primary" @click="submitForm('ruleForm')" :loading="loading">提交</el-button>
 				<el-button @click="resetForm('ruleForm')">重置</el-button>
 			</el-form-item>
 		</el-form>
@@ -25,9 +25,10 @@
 		data() {
 			return {
 				checked: true, //记住密码
+				loading: false,  //提交时加载状态
 				ruleForm: {
-					user: "",
-					pass: ''
+					user: "",//账号
+					pass: ''//密码
 				},
 				rules: {
 					user: [{
@@ -48,8 +49,13 @@
 		},
 		methods: {
 			// 提交方法
-			submitForm(formName) {
+			submitForm(formName) {				
 				let that = this
+				//设置定时器控制加载的时间
+				that.loading = true
+				setTimeout(() => {
+				that.loading = false;
+				}, 2000);
 				let sty = {
 					"userMobile": this.ruleForm.user,
 					"userPassword": this.ruleForm.pass

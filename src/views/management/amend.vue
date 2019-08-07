@@ -91,6 +91,9 @@
 							if(res.data.code==-2){
 							that.$message.error('参数错误');
 						}
+							if(res.data.code==0){
+							that.$message('数据没有改变');
+						}
 						if(res.data.code==1){
 					that.$message.success('修改成功');
 					sessionStorage.removeItem("token");

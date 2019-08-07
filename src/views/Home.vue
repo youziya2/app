@@ -29,35 +29,35 @@
 			<div class="title">
 				<!-- 折叠栏 -->
 				<div class="title-left">
-					          <el-tooltip
-            class="tooltip"
-            effect="dark"
-            :content="isCollapse?'展开':'收起'"
-            placement="right"
-          >
-            <el-button
-              @click="isCollapse=!isCollapse"
-              :icon="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'"
-			  style="padding:15px"
-            />
-          </el-tooltip>
+					<el-tooltip class="tooltip" effect="dark" :content="isCollapse?'展开':'收起'" placement="right">
+						<el-button @click="isCollapse=!isCollapse" :icon="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'" style="padding:15px" />
+					</el-tooltip>
 				</div>
 				<!-- 头部导航栏 -->
 				<div class="title-rigth">
 					<el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" @tab-click="handleClickTab">
-						<el-tab-pane :key="item.name" v-for="(item,index) in editableTabs" :label="item.title" :name="item.name" :closable="index>0">
+						<el-tab-pane :key="item.name" v-for="(item,index) in editableTabs" :label="item.title" :name="item.name"
+						 :closable="index>0">
 							{{item.content}}
 						</el-tab-pane>
-					</el-tabs>					
+					</el-tabs>
 				</div>
-				<div class="last">王小虎</div>
+				<div class="last">
+					<!-- <el-col :span="4" class="userinfo"> -->
+						<el-dropdown trigger="hover">
+							<span class="el-dropdown-link userinfo-inner">王小虎</span>
+							<el-dropdown-menu slot="dropdown">
+								<el-dropdown-item>我的消息</el-dropdown-item>
+								<el-dropdown-item>设置</el-dropdown-item>
+								<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+							</el-dropdown-menu>
+						</el-dropdown>
+					<!-- </el-col> -->
+				</div>
 				<div class="bod">
 					<router-view />
 				</div>
 			</div>
-			<!-- <div class="bod">
-			<router-view />
-			</div> -->
 		</div>
 	</div>
 
@@ -71,7 +71,7 @@
 				openeds: ['0', '1'], //默认展开侧边栏
 				isCollapse: false, //默认侧边栏展开状态
 				Srray: [], //空数组接收
-				editableTabsValue: '/',
+				editableTabsValue: '/',//默认加载页面
 				editableTabs: [{
 					title: '首页',
 					name: '/',
@@ -161,6 +161,18 @@
 			}, );
 		},
 		methods: {
+			/**
+			 * 退出登录
+			 */
+			logout: async function() {
+				var that = this;
+				this.$confirm('确认退出吗?', '提示', {
+					//type: 'warning'
+				}).then(() => {
+					 sessionStorage.clear()
+					that.$router.push('/login');
+				}).catch(() => {})
+			},
 			handleOpen(key, keyPath) {
 				console.log(key, keyPath);
 			},
@@ -254,34 +266,47 @@
 				this.editableTabs = tabs.filter(tab => tab.name !== targetName)
 				sessionStorage.setItem("editableTabs", JSON.stringify(this.editableTabs));
 				sessionStorage.setItem("TabName", activeName);
-			},
-			col() {
-
 			}
 		}
 	}
 </script>
 <style scoped="scoped">
+	.el-col-4 {
+		width: 100%;
+	}
+
 	.el-menu-vertical-demo:not(.el-menu--collapse) {
 		width: 200px;
 		min-height: 400px;
 	}
-	/deep/.el-tabs__item{height: 44px !important;}
+
+	/deep/.el-tabs__item {
+		height: 44px !important;
+	}
+
 	.el-icon-s-unfold,
 	.el-icon-s-fold {
 		width: 50px;
 		height: 50px;
 		font-size: 50px
 	}
-.last{	float: right;width: 5.5%;height: 56px;line-height:56px;}
+
+	.last {
+		float: right;
+		width: 6%;
+		height: 56px;
+		line-height: 56px;
+	}
+
 	@media only screen and (max-width: 1200px) {
 		.last {
-		display:none
+			display: none
 		}
-		}
+	}
+
 	.title-left {
 		height: 56px;
-		width: 4.5%;
+		width: 4%;
 		float: left;
 	}
 
@@ -291,7 +316,7 @@
 	}
 
 	.title {
-		width: 85%;
+		width: 100%;
 		float: right;
 	}
 
@@ -318,20 +343,23 @@
 	.lfte {
 		float: left;
 		height: 98vh;
-		
+
 	}
+
 	.el-menu-vertical-demo {
 		height: 100%;
 		overflow-y: hidden;
 	}
+
 	.content {
 		display: flex;
 	}
 
-	.bod{
+	.bod {
 		width: 100%;
 		float: left;
 	}
+
 	h5 {
 		text-align: center;
 	}
