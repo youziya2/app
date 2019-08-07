@@ -7,7 +7,7 @@
 			<el-form-item label="密码" prop="pass">
 				<el-input type="text" v-model="ruleForm.pass" autocomplete="off"></el-input>
 			</el-form-item>
-			<el-form-item label="确密码" prop="checkPass">
+			<el-form-item label="确认密码" prop="checkPass">
 				<el-input type="text" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
 			</el-form-item>
 			<el-form-item>
@@ -55,14 +55,17 @@
 					},
 					rules: {
 						pass: [{
+							required: true,
 							validator: validatePass,
 							trigger: 'blur'
 						}],
 						checkPass: [{
+							required: true,
 							validator: validatePass2,
 							trigger: 'blur'
 						}],
 						age: [{
+							required: true,
 							validator: checkAge,
 							trigger: 'blur'
 						}]
@@ -71,41 +74,47 @@
 			},
 			methods: {
 				submitForm(formName) {
+					 this.$refs[formName].validate((valid) => {
+				if (valid) {
 					let that = this
-					console.log(that.ruleForm.age)
-					console.log(that.ruleForm.checkPass)
-					that.axios.get('/api/User/ModifyPassword', {
-						params: {
-							uid: sessionStorage.getItem('uid'),
-							oldPassword: that.ruleForm.age,
-							newPassword: that.ruleForm.checkPass
-						}
-					}).then(function(res) {
-						console.log(res)
-						if(res.data.code==-3){
-							that.$message.error('旧密码错误');
-						}
-						if(res.data.code==-1){
-							that.$message.error('系统异常');
-						}
-							if(res.data.code==-2){
-							that.$message.error('参数错误');
-						}
-							if(res.data.code==0){
-							that.$message('数据没有改变');
-						}
-						if(res.data.code==1){
-					that.$message.success('修改成功');
-					sessionStorage.removeItem("token");
-					sessionStorage.removeItem("uid");
-					that.$router.push("login")
+				console.log(that.ruleForm.age)
+				console.log(that.ruleForm.checkPass)
+				that.axios.get('/api/User/ModifyPassword', {
+					params: {
+						uid: sessionStorage.getItem('uid'),
+						oldPassword: that.ruleForm.age,
+						newPassword: that.ruleForm.checkPass
 					}
-					}).catch((err) => {
-						console.log(err)
-						that.$message.error('修改失败');
-					})
-					
-					
+				}).then(function(res) {
+					console.log(res)
+					if(res.data.code==-3){
+						that.$message.error('旧密码错误');
+					}
+					if(res.data.code==-1){
+						that.$message.error('系统异常');
+					}
+						if(res.data.code==-2){
+						that.$message.error('参数错误');
+					}
+						if(res.data.code==0){
+						that.$message('数据没有改变');
+					}
+					if(res.data.code==1){
+				that.$message.success('修改成功');
+				sessionStorage.removeItem("token");
+				sessionStorage.removeItem("uid");
+				that.$router.push("login")
+				}
+				}).catch((err) => {
+					console.log(err)
+					that.$message.error('修改失败');
+				})
+				
+			} else {
+            console.log('error submit!!');
+            return false;
+          }
+        });				
 				},
 				//重置方法
 				resetForm(formName) {
@@ -122,4 +131,5 @@
 	/deep/.el-form-item{
 		text-align: center;
 	}
+		/deep/.el-form-item__label{width: 112px !important;}
 </style>
