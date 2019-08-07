@@ -13,12 +13,6 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueAxios, axios)
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
-
 
 axios.interceptors.request.use(
   function (config) {
@@ -33,3 +27,26 @@ axios.interceptors.request.use(
   }
 )
 
+axios.interceptors.response.use(response => {
+  // NProgress.done() 
+  return response
+}, error => {
+  //获取状态码
+  const {status} = error.response;
+
+  if(status === 401) {
+     console.log(error)
+      //清除token
+      sessionStorage.removeItem('token');
+      //重新登录
+      router.push('/login')
+  }
+
+  return Promise.reject(error)
+});
+
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+}).$mount('#app')

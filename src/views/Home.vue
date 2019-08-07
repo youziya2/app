@@ -6,9 +6,15 @@
 				<el-col :span="12"> -->
 			<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse"
 			 background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :default-openeds="openeds">
+				<el-row class="pic">
+					<!-- <span> -->
+						<img src="../assets/logo.png">
+					<!-- </span> -->
+				</el-row>
 				<!-- <p>智学无忧教育管理系统</p> -->
 				<!-- 双重for循环 -->
 				<!-- 此方法中index如果不加''+符号会报got number的错误 -->
+
 				<el-submenu v-for="(itme,index) in content" :key="index" :index="''+index">
 					<template slot="title">
 						<i class="el-icon-location"></i>
@@ -44,14 +50,14 @@
 				</div>
 				<div class="last">
 					<!-- <el-col :span="4" class="userinfo"> -->
-						<el-dropdown trigger="hover">
-							<span class="el-dropdown-link userinfo-inner">王小虎</span>
-							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item>我的消息</el-dropdown-item>
-								<el-dropdown-item>设置</el-dropdown-item>
-								<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
-							</el-dropdown-menu>
-						</el-dropdown>
+					<el-dropdown trigger="hover">
+						<span class="el-dropdown-link userinfo-inner">王小虎</span>
+						<el-dropdown-menu slot="dropdown">
+							<el-dropdown-item>我的消息</el-dropdown-item>
+							<el-dropdown-item>设置</el-dropdown-item>
+							<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+						</el-dropdown-menu>
+					</el-dropdown>
 					<!-- </el-col> -->
 				</div>
 				<div class="bod">
@@ -71,7 +77,7 @@
 				openeds: ['0', '1'], //默认展开侧边栏
 				isCollapse: false, //默认侧边栏展开状态
 				Srray: [], //空数组接收
-				editableTabsValue: '/',//默认加载页面
+				editableTabsValue: '/', //默认加载页面
 				editableTabs: [{
 					title: '首页',
 					name: '/',
@@ -169,7 +175,7 @@
 				this.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
-					 sessionStorage.clear()
+					sessionStorage.clear()
 					that.$router.push('/login');
 				}).catch(() => {})
 			},
@@ -179,7 +185,9 @@
 			handleClose(key, keyPath) {
 				console.log(key, keyPath);
 			},
-			//点击导航栏跳路由
+			/**
+			 * 点击导航栏跳路由
+			 */
 			handleClickTab(name) {
 				// console.log(name)
 				for (var m = 0; m < this.content.length; m++) {
@@ -195,7 +203,9 @@
 					}
 				}
 			},
-			// 菜单打开页面
+				/**
+			 * 菜单打开页面
+			 */
 			clickMenu(menu) {
 				for (var m = 0; m < this.content.length; m++) {
 					for (var n = 0; n < this.content[m].basics.length; n++) {
@@ -237,7 +247,9 @@
 				); //添加存储用户操作的tab内容
 				sessionStorage.setItem("TabName", menu.routers); //存储menu.routers,这里需要的是editableTabs数组中name
 			},
-			//删除tabs
+					/**
+			* 删除tabs
+			*/
 			removeTab(targetName) {
 				console.log(targetName)
 				let tabs = this.editableTabs
@@ -271,13 +283,28 @@
 	}
 </script>
 <style scoped="scoped">
+	.pic {
+		position: relative;
+		height: 60px;
+
+		span {
+			width: 60px;
+			display: inline-block;
+		}
+
+	}
+		img {
+		width: 50px !important;
+		max-width: 50px !important;
+	}
+
 	.el-col-4 {
 		width: 100%;
 	}
 
 	.el-menu-vertical-demo:not(.el-menu--collapse) {
 		width: 200px;
-		min-height: 400px;
+		min-height: 100%;
 	}
 
 	/deep/.el-tabs__item {
@@ -293,7 +320,7 @@
 
 	.last {
 		float: right;
-		width: 6%;
+		width: 9%;
 		height: 56px;
 		line-height: 56px;
 	}
@@ -311,7 +338,7 @@
 	}
 
 	.title-rigth {
-		width: 90%;
+		width: 85%;
 		float: left;
 	}
 
