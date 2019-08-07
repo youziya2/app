@@ -286,7 +286,6 @@
 	.pic {
 		position: relative;
 		height: 60px;
-
 		span {
 			width: 60px;
 			display: inline-block;
@@ -304,7 +303,7 @@
 
 	.el-menu-vertical-demo:not(.el-menu--collapse) {
 		width: 200px;
-		min-height: 100%;
+		min-height: 400px;
 	}
 
 	/deep/.el-tabs__item {
@@ -375,7 +374,7 @@
 
 	.el-menu-vertical-demo {
 		height: 100%;
-		overflow-y: hidden;
+		overflow-x: hidden;
 	}
 
 	.content {
