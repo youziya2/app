@@ -117,7 +117,7 @@
 		}
 	}
 </script>
-<style scoped="scoped">
+<style scoped="scoped" lang="less">
 	.el-form {
 		width: 400px;
 		margin: 0px auto;

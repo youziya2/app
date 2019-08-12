@@ -124,7 +124,7 @@
 		}
 </script>
 
-<style scoped="scoped">
+<style scoped="scoped" lang="less">
 	.amend{
 		margin: 0px auto;
 	}

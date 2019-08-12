@@ -282,18 +282,19 @@
 		}
 	}
 </script>
-<style scoped="scoped">
+<style scoped="scoped" lang="less">
 	.el-dropdown-menu__item{
 		width: 80px !important;
 	}
 	.pic {
 		position: relative;
 		height: 60px;
+		}
 		span {
 			width: 60px;
 			display: inline-block;
 		}
-	}
+	
 		img {
 		width: 50px !important;
 		max-width: 50px !important;
