@@ -19,8 +19,8 @@
           <span>&nbsp;新&nbsp;增 &nbsp;</span>
         </el-button>
         <el-dialog title="新 增 成 员" :visible.sync="dialogFormVisible" id="el-dialog">
-          <el-form>
-            <el-form-item label="班级名称">
+          <el-form  :model="ruleForm2" status-icon :rules="rules" ref="ruleForm2" class="demo-ruleForm">
+            <el-form-item label="班级名称" prop="user">
               <el-input v-model="ruleForm2.user" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="老师">
@@ -125,6 +125,11 @@
 import {formatDate}  from '@/tool/formatDate'
 export default {
   data() {
+     var checkAge = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('班级名称不能为空!'));
+        }
+        };
     return {
       disabled:"", //删除按钮禁用状态
       value: "", //新增课程当前选中项
@@ -137,8 +142,13 @@ export default {
       dialogFormVisible: false,   //新增弹框状态
       dialogFormVisibles: false,   //编辑弹框状态
       ruleForm2: {         //新增弹框内班级名字
-        user: ""
+        user:""
       },
+       rules: {
+          user: [
+            {required: true, validator: checkAge, trigger: 'blur' }
+          ]
+       },
       ruleForm: {       //编辑弹框内班级名字
         user: ""
       },
@@ -254,6 +264,8 @@ export default {
      */
     submitForm(formName) {
       let that = this;
+       that.$refs[formName].validate((valid) => {
+ if (valid) {
       console.log(that.value);
       console.log(that.teachers);
       that.axios
@@ -265,8 +277,6 @@ export default {
         .then(function(res) {
           console.log(res);
 		  that.dialogFormVisible = false;   //弹框隐藏
-		            console.log(res);
-          that.dialogFormVisibles = false;
           if (res.data.code == 0) {     //根据返回code值来判断添加的情况
             that.$message("数据没有改变");
           }
@@ -289,6 +299,12 @@ export default {
           console.log(err);
           that.$message.error("失败");
         });
+ }else {
+            console.log('error submit!!');
+            return false;
+          }
+         });
+       
     },
     /**
      * 编辑信息
@@ -391,6 +407,9 @@ export default {
 </script>
 
 <style scoped="scoped" lang="less">
+/deep/.el-dialog {
+  width: 480px;
+}
 /deep/.el-input{
   width: 170px;
 }
