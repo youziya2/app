@@ -304,7 +304,7 @@
 	}
 	.el-menu-vertical-demo:not(.el-menu--collapse) {
 		width: 200px;
-		min-height: 98vh;
+		min-height: 100vh;
 	}
 	/deep/.el-tabs__item {
 		height: 44px !important;
@@ -328,7 +328,7 @@
 	}
 	.title-left {
 		height: 56px;
-		width: 4%;
+		width: 46px;
 		float: left;
 	}
 	.title-rigth {

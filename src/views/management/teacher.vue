@@ -21,7 +21,7 @@
         <el-button
           type="text"
           id="el-button"
-          @click="dialogFormVisible  = true,submitValue=false, radios= '男',add.name='',add.tel='',add.pas='',character=''"
+          @click="dialogFormVisible  = true,submitValue=false"
           style="float: right; padding: 3px 0"
         >
           <span>&nbsp;新&nbsp;增 &nbsp;</span>
@@ -51,19 +51,18 @@
                   v-model="character"
                   slot="prepend"
                   placeholder="请选择角色"
-                  @click="getName"
+                  @change="getName"
                 >
                   <el-option
-                    v-for="item in role"
-                    :key="item.userTypeId"
-                    :label="item.userTypeTypeName"
-                    :value="item.userTypeId"
+                    v-for="(item,index) in role"
+                    :key="index"
+                    :value="item.userTypeTypeName"
                   ></el-option>
                 </el-select>
               </div>
             </el-form-item>
             <!-- <div slot="footer" class="dialog-footer"> -->
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button @click="dialogFormVisible = false,radios = '男',character = '',add.tel = '',add.pas = '',add.name = ''">取 消</el-button>
             <el-button type="primary" @click="submitValue?submitForm('add'):submitForm2('add')">确 定</el-button>
             <!-- </div> -->
           </el-form>
@@ -91,8 +90,8 @@ export default {
   data() {
     return {
       radios: "男", //默认性别选中男
-      character: "", //修改角色id
-      rolename: "", //修改角色名称
+      character: "", //修改角色名称
+      roleid: "", //修改角色id
       radio: "全部", //默认性别选中全部
       submitValue: false, //修改老师title显示隐藏
       index: "", //编辑时当前下标
@@ -167,7 +166,7 @@ export default {
     //           },{})  
     //           // console.log(objs)                  
     //       that.radioData[i]= objs
-    //       that.radioData[i].userTypeIds=that.radioData[i].userTypeIds+10
+    //       that.radioData[i].userTypeIds=that.radioData[i].userTypeIds+13
     //  }
       
         })
@@ -188,7 +187,7 @@ export default {
           userMobile: Number(that.add.tel), //手机号，长度11位
           userSex: that.radios, //性别，男|女
           userPassword: Number(that.add.pas), //密码，长度6~18
-          userUserTypeId: that.character //用户角色编号
+          userUserTypeId: that.roleid //用户角色编号
         })
         .then(function(res) {
           console.log(res);
@@ -206,7 +205,9 @@ export default {
           if (res.data.code == 1) {
             that.$message.success("新增成功");
             that.character = "";
-            that.add = []; //新增成功后清空新增框内的值
+           that.add.name = ''; //新增成功后清空新增框内的值
+            that.add.pas = '';
+            that.add.tel = '';
             that.teaCher(); //重新调用获取班级信息方法给tableData赋值
           }
         })
@@ -219,17 +220,17 @@ export default {
      * 获取编辑中角色下拉框点击后角色的名称
      */
     getName(val) {
-      console.log(111);
-      val = this.character;
-      let array = this.roLe();
+      console.log(val);
+        // val = this.character;
+      let array = this.role;
       for (let index = 0; index < array.length; index++) {
-        const element = array[index].userTypeId;
+        const element = array[index].userTypeTypeName;
         if (element == val) {
-          this.rolename = array[index].userTypeTypeName; //角色名称赋值
+          this.roleid = array[index].userTypeId; //角色名称赋值
         }
       }
-      console.log(this.rolename);
-      return this.rolename;
+      console.log(this.roleid);
+      // return this.roleid;
     },
     /**
      * 编辑信息
@@ -244,8 +245,8 @@ export default {
       that.radios = that.tableData[index].userSex;
       that.add.pas = that.tableData[index].userPassword;
       that.add.tel = that.tableData[index].userMobile;
-      that.character = that.tableData[index].userUserTypeId;
-      that.rolename = that.tableData[index].userTypeTypeName; //未调用getName方法时赋给teachername原值
+      that.roleid = that.tableData[index].userUserTypeId;
+      that.character = that.tableData[index].userTypeTypeName; //未调用getName方法时赋给teachername原值
     },
     /**
      * 删除
@@ -300,7 +301,7 @@ export default {
           userName: that.add.name,
           userMobile: that.add.tel,
           userSex: that.radios,
-          userUserTypeId: that.character,
+          userUserTypeId: that.roleid,
           userPassword: that.add.pas
         })
         .then(function(res) {
@@ -321,8 +322,13 @@ export default {
             that.tableData[that.index].userSex = that.radios;
             that.tableData[that.index].userPassword = that.add.pas;
             that.tableData[that.index].userMobile = that.add.tel;
-            that.tableData[that.index].userUserTypeId = that.character;
-            that.tableData[that.index].userTypeTypeName = that.rolename;
+            that.tableData[that.index].userUserTypeId = that.roleid;
+            that.tableData[that.index].userTypeTypeName = that.character;
+            that.radios = "男";
+            that.character = "";
+            that.add.name = ''; //编辑成功后清空新增框内的值
+            that.add.pas = '';
+            that.add.tel = '';
           }
         })
         .catch(err => {

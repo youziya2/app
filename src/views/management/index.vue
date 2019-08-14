@@ -55,8 +55,8 @@
 export default {
   data() {
     return {
-      index:"",
-      rolename:"",
+      index:"",//当前选中项下标
+      rolename:"",//编辑新增框内input值
       dialogFormVisible: false, //新增弹框状态    
       submitValue: false, //编辑弹框状态
       role: [] //接收角色信息

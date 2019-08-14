@@ -125,10 +125,12 @@
 import {formatDate}  from '@/tool/formatDate'
 export default {
   data() {
-     var checkAge = (rule, value, callback) => {
-        if (!value) {
+     var checkUser = (rule, value, callback) => {
+        if (value==='') {
           return callback(new Error('班级名称不能为空!'));
-        }
+        }else {
+						callback();
+					}
         };
     return {
       disabled:"", //删除按钮禁用状态
@@ -146,7 +148,7 @@ export default {
       },
        rules: {
           user: [
-            {required: true, validator: checkAge, trigger: 'blur' }
+            {required: true, validator: checkUser, trigger: 'blur' }
           ]
        },
       ruleForm: {       //编辑弹框内班级名字
