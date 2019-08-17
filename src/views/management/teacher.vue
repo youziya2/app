@@ -92,7 +92,7 @@ export default {
       radios: "男", //默认性别选中男
       character: "", //修改角色名称
       roleid: "", //修改角色id
-      radio: "全部", //默认性别选中全部
+      radio: "全部", //默认选中全部
       submitValue: false, //修改老师title显示隐藏
       index: "", //编辑时当前下标
       dialogFormVisible: false, //弹框状态
